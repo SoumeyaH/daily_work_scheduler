@@ -14,6 +14,8 @@
 
 ## Github Pages URL
 
+[Click here](https://soumeyah.github.io/daily_work_scheduler/) for link to github pages deployed website.
+
 ## Description
 
 ### What Was Done
