@@ -7,4 +7,12 @@ const getDateTimeAndAppend = () => {
   pElement.text(dateTime);
 };
 
-getDateTimeAndAppend();
+const secondsTicking = () => {
+  const callback = () => {
+    getDateTimeAndAppend();
+  };
+
+  setInterval(callback, 1000);
+};
+
+secondsTicking();
