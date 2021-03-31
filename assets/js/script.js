@@ -13,7 +13,7 @@ const secondsTicking = () => {
   setInterval(callback, 1000);
 };
 
-secondsTicking();
+$(document).ready(secondsTicking);
 
 // get the text area
 // link it to a hour
