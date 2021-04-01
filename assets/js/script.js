@@ -13,52 +13,63 @@ const secondsTicking = () => {
   setInterval(renderDateTime, 1000);
 };
 
+const renderPresentOrFuture = () => {
+  const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
+  const currentHour = moment().hour();
+  const timeBlocks = $(".container .row");
+  const callback = function () {
+    const textarea = $(this).find("textarea");
+    const timeBlockTime = Number.parseInt($(this).data("time"), 10);
+    if (timeBlockTime < currentHour) {
+      textarea.addClass("past");
+    }
+
+    if (timeBlockTime === currentHour) {
+      textarea.removeClass("past").addClass("present");
+    }
+    if (timeBlockTime > currentHour) {
+      textarea.addClass("future");
+    }
+
+    const plannedEvent = plannerEvents[timeBlockTime];
+    textarea.text(plannedEvent);
+  };
+
+  timeBlocks.each(callback);
+};
+
 const renderDailyScheduleEvents = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
 
   if (plannerEvents !== null) {
-    const currentHour = moment().hour();
-    const timeBlocks = $(".container .row");
-    const callback = function () {
-      const textarea = $(this).find("textarea");
-      const timeBlockTime = Number.parseInt($(this).data("time"), 10);
-      if (timeBlockTime === currentHour) {
-        textarea.removeClass("past").addClass("present");
-      }
-      if (timeBlockTime > currentHour) {
-        textarea.removeClass("past").addClass("future");
-      }
-
-      const plannedEvent = plannerEvents[timeBlockTime];
-      textarea.text(plannedEvent);
-    };
-
-    timeBlocks.each(callback);
+    renderPresentOrFuture();
   } else {
     // to do if you want try adding a modal that says you have no plans put in
     localStorage.setItem("plannerEvents", JSON.stringify({}));
   }
 };
 
+const onClick = function (event) {
+  const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
+  const target = $(event.target);
+
+  if (target.is("button")) {
+    const key = target.attr("id");
+    const value = target.parent().find("textarea").val();
+
+    const newObject = {
+      ...plannerEvents,
+      [key]: value,
+    };
+
+    localStorage.setItem("plannerEvents", JSON.stringify({ newObject }));
+  }
+};
+
 const onReady = () => {
+  $(".container").click(onClick);
   secondsTicking();
   renderDailyScheduleEvents();
 };
 
 $(document).ready(onReady);
-
-// get the text area
-// link it to a hour
-// hour = get hour by id
-//get text by id
-// set text value as textarea input value
-// put both in object together
-// key hour, key text
-//make an array of objects - each hour
-
-//take that and put it in local storage
-
-// local storage
-// set item - pass in key and value, need to be string - JSON.stringify
-// get item JSON.parse
-// clear - for all, remove item - single key
