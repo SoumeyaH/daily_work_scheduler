@@ -6,14 +6,46 @@ const getDateTimeAndAppend = () => {
 };
 
 const secondsTicking = () => {
-  const callback = () => {
+  const renderDateTime = () => {
     getDateTimeAndAppend();
   };
 
-  setInterval(callback, 1000);
+  setInterval(renderDateTime, 1000);
 };
 
-$(document).ready(secondsTicking);
+const renderDailyScheduleEvents = () => {
+  const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
+
+  if (plannerEvents !== null) {
+    const currentHour = moment().hour();
+    const timeBlocks = $(".container .row");
+    const callback = function () {
+      const textarea = $(this).find("textarea");
+      const timeBlockTime = Number.parseInt($(this).data("time"), 10);
+      if (timeBlockTime === currentHour) {
+        textarea.removeClass("past").addClass("present");
+      }
+      if (timeBlockTime > currentHour) {
+        textarea.removeClass("past").addClass("future");
+      }
+
+      const plannedEvent = plannerEvents[timeBlockTime];
+      textarea.text(plannedEvent);
+    };
+
+    timeBlocks.each(callback);
+  } else {
+    // to do if you want try adding a modal that says you have no plans put in
+    localStorage.setItem("plannerEvents", JSON.stringify({}));
+  }
+};
+
+const onReady = () => {
+  secondsTicking();
+  renderDailyScheduleEvents();
+};
+
+$(document).ready(onReady);
 
 // get the text area
 // link it to a hour
