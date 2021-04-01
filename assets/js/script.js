@@ -13,13 +13,17 @@ const secondsTicking = () => {
   setInterval(renderDateTime, 1000);
 };
 
-const renderPresentOrFuture = () => {
+const renderPastPresentOrFuture = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
   const currentHour = moment().hour();
-  const timeBlocks = $(".container .row");
+  const timeBlocksArray = $(".container .row");
   const callback = function () {
     const textarea = $(this).find("textarea");
     const timeBlockTime = Number.parseInt($(this).data("time"), 10);
+
+    // to do why is my this grey
+    // console.log(this);
+
     if (timeBlockTime < currentHour) {
       textarea.addClass("past");
     }
@@ -35,16 +39,15 @@ const renderPresentOrFuture = () => {
     textarea.text(plannedEvent);
   };
 
-  timeBlocks.each(callback);
+  timeBlocksArray.each(callback);
 };
 
 const renderDailyScheduleEvents = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
 
   if (plannerEvents !== null) {
-    renderPresentOrFuture();
+    renderPastPresentOrFuture();
   } else {
-    // to do if you want try adding a modal that says you have no plans put in
     localStorage.setItem("plannerEvents", JSON.stringify({}));
   }
 };
@@ -62,13 +65,14 @@ const onClick = function (event) {
       [key]: value,
     };
 
-    localStorage.setItem("plannerEvents", JSON.stringify({ newObject }));
+    localStorage.setItem("plannerEvents", JSON.stringify(newObject));
+    renderDailyScheduleEvents();
   }
 };
 
 const onReady = () => {
-  $(".container").click(onClick);
   secondsTicking();
+  $(".container").click(onClick);
   renderDailyScheduleEvents();
 };
 
