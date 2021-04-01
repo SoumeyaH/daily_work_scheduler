@@ -21,13 +21,6 @@ const renderPastPresentOrFuture = () => {
     const textarea = $(this).find("textarea");
     const timeBlockTime = Number.parseInt($(this).data("time"), 10);
 
-    // to do why is my this grey
-    // console.log(this);
-
-    if (timeBlockTime < currentHour) {
-      textarea.addClass("past");
-    }
-
     if (timeBlockTime === currentHour) {
       textarea.removeClass("past").addClass("present");
     }
