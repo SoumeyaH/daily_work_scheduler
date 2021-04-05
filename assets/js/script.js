@@ -1,3 +1,4 @@
+// using moment js gets current date time and appends
 const getDateTimeAndAppend = () => {
   const pElement = $("#currentDay");
 
@@ -5,6 +6,7 @@ const getDateTimeAndAppend = () => {
   pElement.text(dateTime);
 };
 
+// ensures that the time gets updated every second
 const secondsTicking = () => {
   const renderDateTime = () => {
     getDateTimeAndAppend();
@@ -13,6 +15,7 @@ const secondsTicking = () => {
   setInterval(renderDateTime, 1000);
 };
 
+//using moment js checks current hour and accordingly changes css classes to render past/present/future textarea colouring
 const renderPastPresentOrFuture = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
   const currentHour = moment().hour();
@@ -35,6 +38,7 @@ const renderPastPresentOrFuture = () => {
   timeBlocksArray.each(callback);
 };
 
+// if user events stored in local storage then they are rendered to page, otherwise empty array added to local storage
 const renderDailyScheduleEvents = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
 
@@ -45,6 +49,7 @@ const renderDailyScheduleEvents = () => {
   }
 };
 
+// on click of save button text area user input is added to local storage
 const onClick = function (event) {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
   const target = $(event.target);
@@ -63,10 +68,12 @@ const onClick = function (event) {
   }
 };
 
+// invokes function that renders time, function that saves user input to local storage, and function that reads from local storage and renders if anything is available
 const onReady = () => {
   secondsTicking();
   $(".container").click(onClick);
   renderDailyScheduleEvents();
 };
 
+// On ready method initiates all the code inside callback function on ready
 $(document).ready(onReady);
