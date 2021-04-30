@@ -70,6 +70,7 @@ const onClick = function (event) {
 
 // invokes function that renders time, function that saves user input to local storage, and function that reads from local storage and renders if anything is available
 const onReady = () => {
+  getDateTimeAndAppend();
   secondsTicking();
   $(".container").click(onClick);
   renderDailyScheduleEvents();
