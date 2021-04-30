@@ -50,9 +50,19 @@ const onClick = function (event) {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
   const target = $(event.target);
 
-  if (target.is("button")) {
-    const key = target.attr("id");
-    const value = target.parent().find("textarea").val();
+  if (target.is("button") || target.is("i")) {
+    let key;
+    let value;
+
+    if (target.is("button")) {
+      key = target.attr("id");
+      value = target.parent().find("textarea").val();
+    }
+
+    if (target.is("i")) {
+      key = target.parent().attr("id");
+      value = target.parent().parent().find("textarea").val();
+    }
 
     const newObject = {
       ...plannerEvents,
