@@ -42,11 +42,11 @@ const renderPastPresentOrFuture = () => {
 const renderDailyScheduleEvents = () => {
   const plannerEvents = JSON.parse(localStorage.getItem("plannerEvents"));
 
-  if (plannerEvents !== null) {
-    renderPastPresentOrFuture();
-  } else {
+  if (!plannerEvents) {
     localStorage.setItem("plannerEvents", JSON.stringify({}));
   }
+
+  renderPastPresentOrFuture();
 };
 
 // on click of save button text area user input is added to local storage
